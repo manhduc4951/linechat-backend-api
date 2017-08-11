@@ -1,0 +1,36 @@
+<?php echo $this->filterForm; ?>
+<form method="post">
+<table style="width:680px;">
+	<tr>
+		<th>送信日時</th>
+		<th>ユーザID</th>
+		<th>ニックネーム</th>
+		<th>コーナー</th>
+		<th>状態</th>
+	</tr>
+    
+    <?php foreach($this->items as $key=>$user): ?>
+    <?php
+        $class = ($user->image_display == 0) ? 'delete' : 'normal';
+        $checked = ($user->image_display == 0) ? 'checked=""' : '';        
+    ?>
+	<tr class="<?php echo $class ?>">
+		<td>yyyy/mm/dd hh:mi:ss</td>
+		<td><a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'modify', 'id'=>$user->id), null, true);?>"><?php echo $user->user_id ?></a></td>
+		<td><a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'modify', 'id'=>$user->id), null, true);?>"><?php echo $user->nick_name ?></a></td>
+		<td><img src="../img/user_img/mother.jpg" width="60" /></td>
+		<td><input type="checkbox" name="delete_image[]" value="<?php echo $user->id ?>" <?php echo ' '.$checked?> /></td>
+	</tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="5"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>
+</table>
+<div class="form-action">
+        <?php echo $this->items;?>
+</div>
+
+<input type="submit" name="submit" value="SUBMIT" />
+</form>

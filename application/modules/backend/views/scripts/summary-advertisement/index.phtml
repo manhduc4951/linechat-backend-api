@@ -1,0 +1,35 @@
+<?php echo $this->filterForm;?>
+<table style="width:680px;">
+	<tr>
+		<th rowspan="2"><?php echo $this->translate('Date') ?></th>
+		<th rowspan="2"><?php echo $this->translate('Time') ?></th>
+		<th rowspan="2"><?php echo $this->translate('Download count') ?></th>
+		<th rowspan="2"><?php echo $this->translate('Register count') ?></th>
+		<th colspan="3"><?php echo $this->translate('Group') ?></th>
+	</tr>
+	<tr>
+		<th><?php echo $this->translate('Page') ?></th>
+		<th><?php echo $this->translate('Web') ?></th>
+		<th><?php echo $this->translate('Ad') ?></th>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+	<tr>
+		<td><?php echo Qsoft_Helper_Datetime::dateView($item->date_hour) ?></td>
+		<td><?php echo Qsoft_Helper_Datetime::hour($item->date_hour) ?></td>
+		<td style="text-align:right;"><?php echo $item->sum_download_count ?></td>
+		<td style="text-align:right;"><?php echo $item->sum_regist_count ?></td>
+		<td style="text-align:right;"><?php echo $item->media_group_page ?></td>
+		<td style="text-align:right;"><?php echo $item->media_group_web ?></td>
+		<td style="text-align:right;"><?php echo $item->media_group_ad ?></td>
+	</tr>
+    <?php endforeach; ?>
+    
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="7"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>	
+</table>
+<div class="form-action" style="width:680px;">
+    <?php echo $this->items;?>
+</div>

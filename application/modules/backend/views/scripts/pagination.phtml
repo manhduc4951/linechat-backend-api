@@ -1,0 +1,47 @@
+<?php if ($this->pageCount): ?>
+<?php $queryString = empty($_SERVER["QUERY_STRING"]) ? "" : "?{$_SERVER['QUERY_STRING']}"; ?>
+<div class="paginationControl">
+
+<?php if ($this->pageCount > 1): ?>
+<!-- Previous page link -->
+<?php if (isset($this->previous)): ?>
+  <a href="<?php echo $this->url(array('page' => $this->previous)) . $queryString; ?>">
+    <?php echo $this->translate('Previous page');?>
+  </a> |
+<?php else: ?>
+  <?php /*<span class="disabled"><?php echo $this->translate('Previous page');?></span> |*/?>
+<?php endif; ?>
+ 
+<!-- Numbered page links -->
+<?php foreach ($this->pagesInRange as $page): ?>
+  <?php if ($page != $this->current): ?>
+    <a href="<?php echo $this->url(array('page' => $page)) . $queryString; ?>">
+        <?php echo $page; ?>
+    </a> |
+  <?php else: ?>
+    <?php echo $page; ?> |
+  <?php endif; ?>
+<?php endforeach; ?>
+ 
+<!-- Next page link -->
+<?php if (isset($this->next)): ?>
+  <a href="<?php echo $this->url(array('page' => $this->next)) . $queryString; ?>">
+    <?php echo $this->translate('Next page');?>
+  </a>
+<?php else: ?>
+  <?php /*<span class="disabled"><?php echo $this->translate('Next page');?></span>*/?>
+<?php endif; ?>
+
+<?php else: ?>
+
+<a>&nbsp;</a>
+
+<?php endif; ?>
+
+<span class="paginationText">
+<?php echo $this->translate("display %1\$s items of total %2\$s (%3\$s pages)",
+    array($this->currentItemCount, $this->totalItemCount, $this->lastPageInRange));?>
+</span>
+</div>
+
+<?php endif; ?>

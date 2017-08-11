@@ -1,0 +1,35 @@
+<form method="post" action="<?php echo $this->url(array('controller'=>'acl-role','action'=>'index')) ?>">
+<table style="width:500px;">
+	<tr>
+		<th><?php echo $this->translate('Role ID') ?></th>
+		<td><?php echo $this->form->role_id ?></td>
+	</tr>
+	<tr>
+		<th><?php echo $this->translate('Role name') ?></th>
+		<td><?php echo $this->form->role_name ?></td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			<?php echo $this->form->submit ?>
+			&nbsp;
+			&nbsp;
+			<input id="delete_acl" type='button' value="<?php echo $this->translate('Delete') ?>" />
+            <input type="hidden" id="link_to_acl_delete" value="<?php echo $this->url(array('controller'=>'acl-role','action'=>'delete')) ?>" />
+		</th>
+	</tr>
+</table>
+</form>
+
+<table style="width:500px;">
+	<tr>
+		<th><?php echo $this->translate('Role ID') ?></th>
+		<th><?php echo $this->translate('Role name') ?></th>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+	<tr>
+		<td><?php echo $item->role_id ?></td>
+		<td><?php echo $item->role_name ?></td>
+	</tr>
+    <?php endforeach; ?>
+</table>
+

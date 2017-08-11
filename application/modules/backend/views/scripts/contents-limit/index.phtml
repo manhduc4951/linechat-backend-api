@@ -1,0 +1,29 @@
+<form name="contents-limit" method="post" action="<?php echo $this->url(array('action' => 'index')) ?>">
+<table style="width:600px;">
+	<tr>
+		<th><?php echo $this->translate('Content') ?></th>
+		<th><?php echo $this->translate('Settings') ?></th>
+	</tr>
+	<tr>
+		<td style="text-align:center;"><?php echo $this->translate('Available count') ?></td>
+		<td><?php echo $this->form->available_count ?>回</td>
+	</tr>
+	<tr>
+		<td style="text-align:center;"><?php echo $this->translate('Recovery time') ?></td>
+		<td><?php echo $this->form->recovery_time ?>秒</td>
+	</tr>
+	<tr>
+		<td style="text-align:center;"><?php echo $this->translate('Recovery amount') ?></td>
+		<td><?php echo $this->form->recovery_amount ?>個</td>
+	</tr>
+	<tr>
+		<td style="text-align:center;"><?php echo $this->translate('Now init count') ?></td>
+		<td><?php echo $this->form->now_init_count ?>回</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			<?php echo $this->form->submit ?>
+		</th>
+	</tr>
+</table>
+</form>

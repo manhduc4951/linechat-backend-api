@@ -1,0 +1,26 @@
+<?php echo $this->filterForm;?>
+
+<table style="width:600px;">
+	<tr>
+		<th style="width:80px;padding:5px;"><?php echo $this->translate('Date') ?></th>
+		<th style="width:80px;padding:5px;"><?php echo $this->translate('Time') ?></th>
+		<th style="width:80px;padding:5px;"><?php echo $this->translate('Total Startup Time') ?></th>
+		<th style="width:100px;padding:5px;"><?php echo $this->translate('Unique Startup Time') ?></th>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+	<tr>
+        <td><?php echo Qsoft_Helper_Datetime::dateView($item->created_at) ?></td>
+        <td><?php echo Qsoft_Helper_Datetime::hour($item->created_at) ?></td>
+        <td style="text-align:right;"><?php echo $item->total ?></td>
+        <td style="text-align:right;"><?php echo $item->unique_count ?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="4"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>	
+</table>
+<div class="form-action" style="width:600px;">
+        <?php echo $this->items;?>
+</div>

@@ -1,0 +1,362 @@
+<?php
+
+class Console
+{
+    const EOL = "\n";
+    
+    /**
+     * Show a line break in console with provided total of line
+     * 
+     * @param   integer $number
+     * @return  Console
+     */
+    public function line($number = 1)
+    {
+        echo str_repeat(self::EOL, $number);
+        
+        return $this;
+    }
+    
+    /**
+     * Output a message to screen
+     * 
+     * @param   string  $message
+     * @return  Console
+     */
+    public function output($message)
+    {
+        echo $message;
+        
+        return $this;
+    }
+    
+    /**
+     * Outout an object to screen
+     * 
+     * @param   mixed   $object
+     * @param   string  $message
+     * @return  Console
+     */
+    public function outputObject($object, $message = 'Object: ')
+    {
+        $this
+            ->line()
+            ->output($message)
+            ->line();
+        
+        print_r($object);
+        
+        return $this;
+    }
+    
+    /**
+     * Ouput a question message and wait for user answer
+     * 
+     * @param   string  $message
+     * @return  string
+     */
+    public function getUserInput($message)
+    {
+        $this->line();
+        fwrite(STDOUT, $message);
+        $response = trim(fgets(STDIN));
+        
+        return $response;
+    }
+    
+    /**
+     * End the application session
+     * 
+     * @return void
+     */
+    public function endApplication()
+    {
+        $this
+            ->line(2)
+            ->output('===== END APPLICATION =====')
+            ->line()
+            ->_end();
+    }
+    
+    /**
+     * Force quit the application
+     * 
+     * @return void
+     */
+    protected function _end()
+    {
+        die;
+    }
+}
+
+class My_JAXL
+{
+    /**
+     * @var My_JAXL
+     */
+    static $self;
+    
+    /**
+     * @var JAXL
+     */
+    protected $jaxl;
+    
+    /**
+     * @var Console
+     */
+    protected $console;
+    
+    /**
+     * Constructor
+     * 
+     * @return  My_JAXL
+     */
+    protected function __construct()
+    {
+        $this->jaxl = require dirname(__FILE__) . '/init.php';
+        $this->console = new Console();
+        
+        return $this;
+    }
+    
+    public static function getInstance()
+    {
+        if (null === self::$self) {
+            self::$self = new My_JAXL();
+        }
+        
+        return self::$self;
+    }
+    
+    public function getConsole()
+    {
+        return $this->console;
+    }
+    
+    /**
+     * Start stream
+     * 
+     * @return  My_JAXL
+     */
+    public function start()
+    {
+        global $argv;
+        if (isset($argv[3]) and $argv[3] == 'chat') {
+            $this->jaxl->addPlugin('jaxl_post_auth', array($this, 'onPostAuthResponse'));
+        } else {
+            $this->jaxl->addPlugin('jaxl_post_auth', array($this, 'requestCommand'));
+        }
+        
+        // Fire start Jaxl core
+        $this->jaxl->startCore("stream");
+        
+        return $this;
+    }
+    
+    public function end()
+    {
+        $this->console->endApplication();
+        $this->jaxl->shutdown();
+    }
+    
+    public function command()
+    {
+        $command = $this->console->getUserInput("Enter command: ");
+        $arguments = explode('" "', trim($command, '" '));
+        
+        $command = array_shift($arguments);
+        $arguments[] = 'onResponse';
+        
+        return call_user_func_array(array($this->jaxl, 'JAXL' . $command), $arguments);
+    }
+    
+    public function sendMessage()
+    {
+        $to = $this->console->getUserInput("Send to: ");
+        $message = $this->console->getUserInput("Enter your message: ");
+        $this->jaxl->sendMessage($to, $message);
+        
+        $this->requestCommand();
+    }
+    
+    public function onPostAuthResponse($payload)
+    {
+        $this->jaxl->setStatus('i\'m free to chat', 'chat');
+    }
+    
+    public function requestCommand()
+    {
+        $command = $this->console->getUserInput("Enter your command: ");
+        $command = preg_replace('/\s/', '', ucwords($command));
+        $command[0] = strtolower($command[0]);
+        
+        if (method_exists($this, $command)) {
+            call_user_func(array($this, $command));
+        } else {
+            $this->console->output('Your command does not exist, please enter another one.');
+            $this->requestCommand();
+        }
+        
+        return $this;
+    }
+    
+    public function createNode()
+    {
+        $nodeId = $this->console->getUserInput("Enter your node id: ");
+        $serviceId = $this->console->getUserInput("Enter your service id: ");
+        $this->jaxl->JAXL0060('createNode', $serviceId . '.' . JAXL_DOMAIN, '', $nodeId, 'onResponse');
+    }
+    
+    public function deleteNode()
+    {
+        $nodeId = $this->console->getUserInput("Enter your node id: ");
+        $serviceId = $this->console->getUserInput("Enter your service id: ");
+        $this->jaxl->JAXL0060('deleteNode', $serviceId . '.' . JAXL_DOMAIN, '', $nodeId, false, 'onResponse');
+    }
+    
+    public function getNodeSubscriptions()
+    {
+        $serviceId = $this->console->getUserInput("Enter your service id: ");
+        $this->jaxl->JAXL0060('getNodeSubscriptions', $serviceId . '.' . JAXL_DOMAIN, '', 'onResponse');
+    }
+    
+    public function discoNodes()
+    {
+        $this->jaxl->JAXL0060('discoNodes', '', '', 'onResponse');
+    }
+    
+    public function publishItem()
+    {
+        $nodeId = $this->console->getUserInput("Enter your node id: ");
+        $this->jaxl->JAXL0060('publishItem','', '', $nodeId, "<entry xmlns='http://www.w3.org/2005/Atom'>
+          <title>Group title changed</title>
+          <summary>
+ Group description
+          </summary>
+ <image>http://image</image>
+ <approve></approve>
+ <admin></admin>
+          <published>2003-12-13T18:30:02Z</published>
+          <updated>2003-12-13T18:30:02Z</updated>
+        </entry>", 'test-item', 'onResponse');
+    }
+    
+    public function getNodeItems()
+    {
+        $nodeId = $this->console->getUserInput("Enter your node id: ");
+        $serviceId = $this->console->getUserInput("Enter your service id: ");
+        $this->jaxl->JAXL0060('getNodeItems', $serviceId . '.' . JAXL_DOMAIN, '', $nodeId, 'onResponse');
+    }
+    
+    public function onResponse($payload)
+    {
+        //$this->console->outputObject($payload, 'The response: ');
+        $this->requestCommand();
+    }
+    
+    public function getRosterList()
+    {
+        $this->jaxl->getRosterList('onResponse');
+    }
+    
+    public function addRoster()
+    {
+        $jid = $this->console->getUserInput("Enter Jid: ");
+        $this->jaxl->addRoster($jid, 'test');
+        
+        $this->requestCommand();
+    }
+    
+    public function subscribe()
+    {
+        $jid = $this->console->getUserInput("Enter Jid: ");
+        $this->jaxl->subscribe($jid);
+        
+        $this->requestCommand();
+    }
+    
+    public function subscribed()
+    {
+        $jid = $this->console->getUserInput("Enter Jid: ");
+        $this->jaxl->subscribed($jid);
+        
+        $this->requestCommand();
+    }
+    
+    public function updateRoster()
+    {
+        $jid = $this->console->getUserInput("Enter Jid: ");
+        $subscription = $this->console->getUserInput("Enter subscription: ");
+        $this->jaxl->updateRoster($jid, 'test', false, $subscription);
+        
+        $this->requestCommand();
+    }
+    
+    public function deleteRoster()
+    {
+        $jid = $this->console->getUserInput("Enter Jid: ");
+        $this->jaxl->deleteRoster($jid);
+        
+        $this->requestCommand();
+    }
+    
+    public function subscribeNode()
+    {
+        $nodeId = $this->console->getUserInput("Enter your node id: ");
+        $serviceId = $this->console->getUserInput("Enter the service id: ");
+        $jid = $this->console->getUserInput("Enter the Jid to subscribe (optional): ");
+        if (empty($jid)) {
+            $jid = $this->jaxl->bareJid;
+        }
+        $this->jaxl->JAXL0060('subscribe', $serviceId . '.' . JAXL_DOMAIN, '', $nodeId, $jid, 'onResponse');
+    }
+    
+    public function updateAffiliation()
+    {
+        $nodeId = $this->console->getUserInput("Enter your node id: ");
+        $serviceId = $this->console->getUserInput("Enter the service id: ");
+        $jid = $this->console->getUserInput("Enter the Jid to update: ");
+        $affiliation = $this->console->getUserInput("Enter the affiliation: ");
+        $this->jaxl->JAXL0060('updateAffiliation', $serviceId . '.' . JAXL_DOMAIN,
+            '', $nodeId, $jid, $affiliation, 'onResponse');
+    }
+    
+    public function getNodeSubscriberList()
+    {
+        $nodeId = $this->console->getUserInput("Enter your node id: ");
+        $serviceId = $this->console->getUserInput("Enter the service id: ");
+        $this->jaxl->JAXL0060('getSubscriberList', $serviceId . '.' . JAXL_DOMAIN, '', $nodeId, 'onResponse');
+    }
+    
+    public function getPrivacyList()
+    {
+        $this->jaxl->JAXL0016('getListNames', 'onResponse');
+    }
+    
+    public function editPrivacyList()
+    {
+        $jid = $this->console->getUserInput("Enter jid: ");
+        $data = array(
+            array(
+                'type' => 'jid',
+                'value' => $jid,
+                'action' => 'deny'
+            ),
+        );
+        $this->jaxl->JAXL0016('editList', 'default', $data, 'onResponse');
+    }
+    
+    public function setDefaultPrivacyList()
+    {
+        $name = $this->console->getUserInput("Enter list name: ");
+        $this->jaxl->JAXL0016('setDefaultList', $name, 'onResponse');
+    }
+}
+
+function onResponse($payload)
+{
+    $application = My_JAXL::getInstance();
+    $application->onResponse($payload);
+}
+
+My_JAXL::getInstance()->start();

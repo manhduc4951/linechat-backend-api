@@ -1,0 +1,28 @@
+<?php echo $this->form ?>
+<table style="width:680px;">
+	<tr>
+		<th><?php echo $this->translate('SEQ') ?></th>
+		<th><?php echo $this->translate('Gift Category Name') ?></th>
+		<th><?php echo $this->translate('Public/Private') ?></th>
+		<th><?php echo $this->translate('Delete') ?></th>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+    <?php $class = ($item->show_hide == 0) ? 'delete' : 'normal' ?>
+	<tr class="<?php echo $class ?>" >
+		<td style="text-align:center;"><a href="<?php echo $this->url(array('controller'=>'giftcategory', 'action'=>'modify', 'id'=>$item->gift_category_id), null, true);?>"><?php echo $item->gift_category_id ?></a></td>
+		<td style="text-align:center;"><?php echo $item->gift_category_name ?></td>
+		<td style="text-align:center;"><?php echo ($item->show_hide == 0) ? 'Private' : 'Public' ?></td>
+		<td style="text-align:center;"><input type="button" onclick="window.location.href='<?php echo $this->url(array('controller' => 'gift','action' => 'index')) .
+        '?' . http_build_query(array('gift_category_id' => $item->gift_category_id))  ?>'" name="submit" value="<?php echo $this->translate('Gift Detail') ?>" /></td>
+        
+	</tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="4"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>	
+</table>
+<div class="form-action" style="width:680px;">
+        <?php echo $this->items;?>
+</div>

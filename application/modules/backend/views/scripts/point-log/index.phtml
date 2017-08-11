@@ -1,0 +1,35 @@
+<?php echo $this->filterForm;?>
+<table style="width:800px;">
+	<tr>
+		<th><?php echo $this->translate('Date') ?></th>
+		<th><?php echo $this->translate('Unique ID') ?></th>
+		<th><?php echo $this->translate('User ID') ?></th>
+		<th><?php echo $this->translate('Increase or Decrease') ?></th>
+		<th><?php echo $this->translate('Content') ?></th>
+		<th><?php echo $this->translate('Detail') ?></th>
+		<th><?php echo $this->translate('Point Increase or Decrease') ?></th>
+		<th><?php echo $this->translate('Remaining Points') ?></th>
+		<th><?php echo $this->translate('Remark') ?></th>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+	<tr>
+        <td><?php echo Qsoft_Helper_Datetime::time($item->created_at) ?></td>
+        <td><?php echo $item->unique_id ?></td>
+        <td><?php echo $item->user_id_text ?></td>
+        <td><?php echo $this->translate($item->detectPointLogType()) ?></td>
+        <td><?php echo $item->content ?></td>
+        <td><?php echo $item->content_detail ?></td>
+        <td style="text-align:right;"><?php echo abs($item->point - $item->point_after) ?></td>
+        <td style="text-align:right;"><?php echo $item->point_after ?></td>
+        <td><?php echo $item->note ?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="9"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>
+</table>
+<div class="form-action" style="width:800px;">
+        <?php echo $this->items;?>
+</div>

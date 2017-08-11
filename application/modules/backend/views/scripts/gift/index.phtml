@@ -1,0 +1,33 @@
+<a href="<?php echo $this->url(array('controller' => 'giftcategory')) ?>"><?php echo $this->translate('Back to gift category') ?></a></a>
+<?php echo $this->form ?>
+<table style="width:680px;">
+	<tr>
+		<th><?php echo $this->translate('SEQ') ?></th>
+		<th><?php echo $this->translate('Gift Name') ?></th>
+		<th><?php echo $this->translate('Gift Image') ?></th>
+		<th><?php echo $this->translate('Point') ?></th>
+		<th><?php echo $this->translate('Public/Private') ?></th>
+	</tr>
+    <?php foreach($this->items as $item): ?>
+    <?php $class = ($item->show_hide == 0) ? 'delete' : 'normal' ?>
+	<tr class="<?php echo $class ?>" >	
+		<td style="text-align:center;"><a href="<?php echo $this->url(array('controller'=>'gift', 'action'=>'modify', 'id'=>$item->gift_id), null, true). '?' . http_build_query(array('gift_category_id' => $this->gift_category_id));?>"><?php echo $item->gift_id ?></td>
+		<td style="text-align:center;"><?php echo $item->gift_title ?></td>
+		<td style="text-align:center;">
+            <?php if($item->gift_img): ?>
+            <img src="<?php echo Dto_Gift::getImageUrl($item->gift_img) ?>" width="48" />
+            <?php endif; ?>
+        </td>
+		<td style="text-align:center;"><?php echo $item->point ?>pt</td>
+		<td style="text-align:center;"><?php echo ($item->show_hide == 0) ? 'private' : 'public' ?></td>
+	</tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="5"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>									
+</table>
+<div class="form-action" style="width:680px;">
+        <?php echo $this->items;?>
+</div>

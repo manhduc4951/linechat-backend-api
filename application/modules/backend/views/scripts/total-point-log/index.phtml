@@ -1,0 +1,41 @@
+<?php echo $this->filterForm;?>
+<table>
+	<tr>
+		<th rowspan="3" style="width:80px;padding:5px;"><?php echo $this->translate('Date') ?></th>
+		<th rowspan="3" style="width:80px;padding:5px;"><?php echo $this->translate('Time') ?></th>
+		<th rowspan="3" style="width:80px;padding:5px;"><?php echo $this->translate('Number') ?></th>
+		<th rowspan="3" style="width:80px;padding:5px;"><?php echo $this->translate('Total') ?></th>
+		<th colspan="<?php echo count($this->avatars)*2 ?>" style="text-align:center;width:100px;padding:5px;"><?php echo $this->translate('Avatar') ?></th>
+	</tr>
+	<tr>
+        <?php foreach($this->avatars as $avatar): ?>
+		<td colspan="2" style="text-align:center;width:100px;padding:5px;"><img src="<?php echo Dto_UserAvatar::getImageUrl($avatar->avatar_img) ?>" width="30" /></td>
+		<?php endforeach; ?>
+	<tr>
+        <?php for($i = 1; $i <= count($this->avatars); $i++): ?>
+		<th><?php echo $this->translate('Number') ?></th>
+        <th><?php echo $this->translate('Total') ?></th>
+		<?php endfor; ?>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+	<tr>
+		<td><?php echo Qsoft_Helper_Datetime::dateView($item->date_hour) ?></td>
+		<td><?php echo Qsoft_Helper_Datetime::hour($item->date_hour) ?></td>
+		<td style="text-align:right;"><?php echo $item->sum_point_count ?></td>
+		<td style="text-align:right;"><?php echo $item->sum_total_point ?></td>
+        <?php for($i = 1; $i <= count($this->avatars); $i++): ?>
+		<td style="text-align:right;"><?php echo $item->{'avatar_'.$i.'_point_count'} ?></td>
+        <td style="text-align:right;"><?php echo $item->{'avatar_'.$i.'_total_point'} ?></td>
+		<?php endfor; ?>
+	</tr>
+    <?php endforeach; ?>
+    
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="<?php echo 4+count($this->avatars)*2 ?>"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>
+</table>
+<div class="form-action">
+        <?php echo $this->items;?>
+</div>

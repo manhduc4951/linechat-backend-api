@@ -1,0 +1,59 @@
+<?php
+    //echo '<pre>'; var_dump($modules); echo '</pre>'; die;
+    $count = 0;
+    // dont show the administrator role
+    $this->roles->remove('role_id', Dao_AclRole::ADMINISTRATOR_ROLE_ID);
+?>
+
+<?php echo $this->form('', array('method' => 'POST'));?>
+	<table>
+		<tr>
+	        <th></th>
+	        <?php foreach ($this->roles as $role) : ?>
+	            <th><?php echo ucwords($role->role_name);?></th>
+	        <?php endforeach; ?>
+	    </tr>
+	    
+        <?php foreach ($this->permissions as $controller => $actions) : $count++;?>
+            <tr class="yellow">
+                <th>
+                    <?php echo $this->formCheckbox('controller_id[]', $controller, array('class' => 'check-one-controller'));?>  
+                </th>
+                <th colspan="<?php echo count($this->roles);?>">
+                    <?php echo Qsoft_Helper_String::toTitle($controller, '-');?>
+                </th>
+            </tr>
+            <tr class="yellow">
+                <td></td>
+                <?php foreach ($this->roles as $role) : ?>
+                    <td><?php echo $this->formCheckbox('checkall', null, array('class' => 'check-all', 'name' => $count));?></td>
+                <?php endforeach; ?>
+            </tr>
+            <?php  foreach ($actions as $action => $permissons):?>
+                <tr class="tr-<?php echo $count;?>">
+                    <td><?php echo Qsoft_Helper_String::toTitle($action, '-');?></td>
+                    <?php foreach ($this->roles as $role) :?>
+                        <td>
+                            <?php if ( ! empty($permissons[$role->role_name])) : ?>
+                                <?php echo $this->formCheckbox(
+                                    'permission[' . $permissons[$role->role_name]['id'] . ']',
+                                    1,
+                                    array('checked'=> ! empty($permissons[$role->role_name]['value']), 'class' => 'check-one')
+                                );?>
+                            <?php endif; ?>
+
+                        </td>
+                    <?php endforeach; ?>
+                </tr>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+	</table>
+	
+	<?php echo $this->formSubmit('update', 'Update');?>
+	<?php echo $this->formButton('scan-action', 'Scan application', array(
+	    'onclick' => 'location.href="' . $this->url(array('controller' => 'permission', 'action' => 'scan')) . '"'));?>
+</form>
+
+<?php $this->headScript()->appendFile(
+        $this->baseUrl('js/permission.js')
+    );  ?>

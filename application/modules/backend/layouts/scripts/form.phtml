@@ -1,0 +1,65 @@
+<?php
+    $this->headTitle($this->title);
+    $currentTheme = Zend_Registry::get('app_config')->site->theme;
+    $this->headLink()->prependStylesheet(
+        $this->baseUrl('themes/' . $currentTheme . '/css/main.css')
+    );
+    $this->headLink()->prependStylesheet(
+        $this->baseUrl('js/jqueryui/css/blitzer/jquery-ui-1.8.23.custom.css')
+    );
+    $this->headLink()->prependStylesheet(
+        $this->baseUrl('themes/' . $currentTheme . '/css/common.css')
+    );
+    $this->headLink()->prependStylesheet(
+        $this->baseUrl('themes/' . $currentTheme . '/css/contents.css')
+    );
+    $this->headLink()->prependStylesheet(
+        $this->baseUrl('themes/' . $currentTheme . '/css/jquery.imageZoom.css')
+    );
+    $this->headScript()->appendFile(
+        $this->baseUrl('js/main.js')
+    );
+    $this->headScript()->appendFile(
+        $this->baseUrl('js/jquery.imageZoom.js')
+    );
+?>
+<?php echo $this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+<head>
+    <?php echo $this->headMeta(); ?> 
+    <?php echo $this->headTitle(); ?>
+    <?php echo $this->headLink(); ?>    
+</head>
+<body>
+    <div id="main">
+        <div class="box">
+            <div id="header"><?php echo Zend_Registry::get('app_config')->site->siteName;?></div>
+            <div class="contents">
+                <?php echo $this->partial('navigation.phtml'); ?>
+                <div style="clear:both"></div>
+                <br />
+                <?php if ( ! empty($this->secondNavigation)) : ?>
+                    <?php echo $this->navigation()->menu()->setULClass('tab')->renderMenu($this->secondNavigation); ?>
+                    <div style="clear:both"></div>
+                <?php endif; ?>
+                    
+                <div class="member">
+                    <div class="header">&nbsp;&nbsp;●&nbsp;<?php echo $this->title;?></div>
+                    
+                    <?php echo $this->flashMessages($this->messages);?>
+
+                    <?php echo $this->layout()->content; ?>
+                </div>
+            </div>
+            <div id="footer">[COPYRIGHT]</div>
+        </div>
+    </div>
+</body>
+    <?php echo $this->jQuery(); ?>
+    <?php echo $this->headScript(); ?>
+    <script type="text/javascript"> 
+        $(document).ready(function() {
+            $('a.imageToZoom').imageZoom();
+        });
+    </script> 
+</html>

@@ -1,0 +1,32 @@
+<form method="post">
+<table style="width:600px;">
+	<tr>
+		<th>● <?php echo $this->translate('Date') ?></th>
+		<td>
+		<?php echo Qsoft_Helper_Datetime::time($this->item->created_at) ?>
+		</td>
+	</tr>
+	<tr>
+		<th>● <?php echo $this->translate('User report') ?></th>
+		<td>
+		<?php echo $this->item->user_report_nick_name ?>
+		</td>
+	</tr>
+	<tr>
+		<th>● <?php echo $this->translate('Target') ?></th>
+		<td>
+		<?php echo $this->item->user_target_nick_name ?>
+		</td>
+	</tr>
+	<tr>
+		<th>● <?php echo $this->translate('Content') ?></th>
+		<td><?php echo $this->item->content ?></td>
+	</tr>
+	<tr>
+		<th>● <?php echo $this->translate('Response') ?></th>
+		<td><textarea name="reply_content" cols="50" rows="5" style="font-size:11px;"><?php echo $this->item->reply ?></textarea></td>
+	</tr>
+</table>
+
+<input type="submit" value="Submit" class="confirm" />
+</form>

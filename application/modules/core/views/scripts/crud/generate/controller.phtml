@@ -1,0 +1,61 @@
+<?php define('EOL', "\n"); ?>
+<?php echo '<?php'; ?>
+
+
+/**
+ * Controller <?php echo ucwords($this->controllerName) . EOL; ?>
+ * 
+ * @package	LineChatApp
+ * @subpackage <?php echo ucfirst($this->moduleName); ?>_Controller
+ * @author
+ */
+class <?php echo ucwords($this->controllerName); ?>Controller extends <?php echo $this->controllerParent; ?>
+{
+	<?php if ( ! empty($this->business_name)) : echo EOL; ?>
+	/**
+	 * Business class name
+	 * @var string
+	 */
+	protected $_businessClass = '<?php echo $this->business_name; ?>';
+	<?php endif; ?>
+	<?php if ( ! empty($this->business_name)) : echo EOL; ?>
+	/**
+	 * Dao class name
+	 * @var string
+	 */
+	protected $_daoClass = '<?php echo $this->dao_name; ?>';
+	<?php endif; ?>
+	<?php if ( ! empty($this->business_name)) : echo EOL; ?>
+	/**
+     * Get the Business object
+     * 
+     * @return <?php echo $this->business_name . EOL; ?>
+     */
+    protected function getBusiness()
+    {
+        return parent::getBusiness();
+    }
+	<?php endif; ?>
+	<?php if ( ! empty($this->dao_name)) : echo EOL; ?>
+	/**
+     * Get the Dao object
+     * 
+     * @return <?php echo $this->dao_name . EOL; ?>
+     */
+    protected function getDao()
+    {
+        return parent::getDao();
+    }
+	<?php endif; ?>
+	
+	/**
+     * Initialize class
+     * 
+     * @return void
+     */
+	public function init()
+	{
+		parent::init();
+	}
+	
+}

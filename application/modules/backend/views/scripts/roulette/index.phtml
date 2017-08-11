@@ -1,0 +1,91 @@
+<form name="roulette" method="post" action="<?php echo $this->url(array('action' => 'index')) ?>" >
+<table style="width:780px;">
+    <tr>
+		<th><?php echo $this->translate('No') ?></th>
+		<th><?php echo $this->translate('Type') ?></th>
+		<th><?php echo $this->translate('Content') ?></th>
+		<th><?php echo $this->translate('Roulette Name') ?></th>
+		<th><?php echo $this->translate('Probability') ?>（％）</th>
+	</tr>
+    
+    
+    <?php foreach($this->items as $key=>$item): ?>
+	<tr>
+		<td style="text-align:center;"><?php echo $item->roulette_id ?></td>
+		<td>            
+			<select name="<?php echo $item->roulette_id ?>[type]" class="select" id="select<?php echo $item->roulette_id ?>">
+				<option value="0" <?php if($item->type == 0) echo " selected=''" ?> ></option>
+				<option value="1" <?php if($item->type == 1) echo " selected=''" ?> ><?php echo $this->translate('Item') ?></option>
+				<option value="2" <?php if($item->type == 2) echo " selected=''" ?> ><?php echo $this->translate('Gift') ?></option>
+				<option value="3" <?php if($item->type == 3) echo " selected=''" ?> ><?php echo $this->translate('Point') ?></option>
+				<option value="9" <?php if($item->type == 9) echo " selected=''" ?> ><?php echo $this->translate('None') ?></option>
+			</select>
+		</td>
+		<td>
+            
+			<div id="select<?php echo $item->roulette_id ?>_1" style="display:<?php echo ($item->type == 1) ? 'block' : 'none' ?>;">
+			<?php echo $this->translate('Provide Item') ?>：
+			<select class="select2" id="select_item_<?php echo $item->roulette_id ?>" >
+				<?php foreach($this->items_type as $item_type): ?>
+                <?php if(in_array($item_type,$this->item_type_has_value)): ?>
+				<option value="<?php echo $item_type ?>" <?php if($item->item_type == $item_type) echo " selected=''" ?> >
+                    <?php echo $item_type ?>
+                </option>
+                <?php endif; ?>
+                <?php endforeach; ?>
+			</select>
+            
+            <?php foreach($this->array_item_itemtype as $key=>$number_item_type): ?>
+            <?php if($item->item_type == null) $item->item_type = $this->item_type_has_value[0] ?>            
+			<select id="select_item_<?php echo $item->roulette_id.'_'.$key ?>" name="<?php echo $item->roulette_id ?>[item_id]" class="select_item_<?php echo $item->roulette_id ?>" <?php if($item->item_type != $key) echo " disabled=''" ?> style="display:<?php echo ($item->item_type == $key) ? 'block' : 'none' ?> ;">
+				<?php foreach($number_item_type as $item_child): ?>                
+				<option value="<?php echo $item_child['item_name'] ?>" class="<?php echo $item_child['item_type'] ?>" <?php if($item->item_name == $item_child['item_name']) echo " selected=''" ?> >
+                    <?php echo $item_child['item_title'] ?>
+                </option>                
+                <?php endforeach; ?>
+			</select>            
+            <?php endforeach; ?>
+			</div>
+            
+			<div id="select<?php echo $item->roulette_id ?>_2" style="display:<?php echo ($item->type == 2) ? 'block' : 'none' ?>;">
+			<?php echo $this->translate('Provide Gift') ?>：
+			<select class="select1" id="select_gift_<?php echo $item->roulette_id ?>">
+				<?php foreach($this->gift_categories as $gift_category): ?>
+                <?php if(in_array($gift_category->gift_category_id,$this->gift_category_has_value)): ?>
+				<option value="<?php echo $gift_category->gift_category_id ?>" <?php if($gift_category->gift_category_id == $item->gift_category_id) echo " selected=''" ?>>
+                    <?php echo $gift_category->gift_category_name ?>
+                </option>
+                <?php endif; ?>
+                <?php endforeach; ?>
+			</select>
+            
+            <?php foreach($this->array_gift_giftcategory as $key=>$number_gift_category): ?>
+            <?php if($item->gift_category_id == null) $item->gift_category_id = $this->gift_category_has_value[0] ?>                      
+			<select id="select_gift_<?php echo $item->roulette_id.'_'.$key ?>" name="<?php echo $item->roulette_id ?>[gift_id]" class="select_gift_<?php echo $item->roulette_id ?>" <?php if($item->gift_category_id != $key) echo " disabled=''" ?> style="display:<?php echo ($key == $item->gift_category_id) ? 'block' : 'none' ?> ;">
+			    <?php foreach($number_gift_category as $gift): ?>                                
+				<option value="<?php echo $gift['gift_id'] ?>" class="<?php echo $gift['gift_category_id'] ?>" <?php if($item->gift_id == $gift['gift_id']) echo " selected=''" ?>  >
+                    <?php echo $gift['gift_title'] ?>
+                </option>                               
+                <?php endforeach; ?>
+			</select>                         
+            <?php endforeach; ?>
+			</div>            
+            
+			<div id="select<?php echo $item->roulette_id ?>_3" style="display:<?php echo ($item->type == 3) ? 'block' : 'none' ?>;">
+			<input name="<?php echo $item->roulette_id ?>[point]" type="text" value="<?php echo $item->point ?>" style="width:50px;" />		
+			</div>
+            
+            
+		</td>
+		<td><input type="text" name="<?php echo $item->roulette_id ?>[title]" value="<?php echo $item->title ?>" style="width:150px;" /></td>
+		<td><input type="text" name="<?php echo $item->roulette_id ?>[odds]" value="<?php echo $item->odds ?>" style="width:25px;text-align:right;" />％</td>
+	</tr>
+	<?php endforeach; ?>
+    
+	<tr>
+		<th colspan="5">
+			<input type="submit" value="<?php echo $this->translate('Submit') ?>" id="submit" class="confirm" />
+		</th>
+	</tr>
+</table>	
+</form>

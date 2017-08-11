@@ -1,0 +1,29 @@
+<?php echo $this->form ?>
+<table style="width:680px;">
+    <tr>
+		<th style="width:80px;padding:5px;"><?php echo $this->translate('SEQ') ?></th>
+		<th style="width:220px;padding:5px;"><?php echo $this->translate('Group Name') ?></th>
+		<th style="width:60px;padding:5px;"><?php echo $this->translate('Location') ?></th>
+		<th style="width:60px;padding:5px;"><?php echo $this->translate('Age') ?></th>
+		<th style="width:100px;padding:5px;"><?php echo $this->translate('Reflect') ?><br />反映</th>
+		<th style="width:100px;padding:5px;"><?php echo $this->translate('Delete') ?></th>
+    </tr>
+    <?php foreach($this->items as $key=>$item): ?>
+    <tr>
+    	<td style="text-align:center;"><a href="<?php echo $this->url(array('controller'=>'pregroup', 'action'=>'modify', 'id'=>$item->pre_group_id), null, true);?>"><?php echo $item->pre_group_id ?></a></td>
+    	<td><?php echo $item->pre_group_name ?></td>
+    	<td style="text-align:center;"><?php echo $item->region_name ?></td>
+    	<td style="text-align:center;"><?php echo $item->age ?></td>
+        <td style="text-align:center;"><?php echo ($item->show_hide == 1) ? 'reflect' : 'unreflect' ?></td>
+    	<td style="text-align:center;"><input type='button' value="<?php echo $this->translate('Delete') ?>" onclick="goConfirm('<?php echo $this->url(array('action' => 'delete', 'id' => $item->pre_group_id)) ?>');" /></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="6"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>
+</table>
+<div class="form-action" style="width:680px;">
+        <?php echo $this->items;?>
+</div>

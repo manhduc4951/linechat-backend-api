@@ -1,0 +1,27 @@
+<?php echo $this->form ?>
+<table style="width:680px;">
+    <tr>
+    	<th style="width:80px;padding:5px;"><?php echo $this->translate('SEQ') ?></th>
+    	<th style="width:220px;padding:5px;"><?php echo $this->translate('Nick name') ?></th>
+    	<th style="width:100px;padding:5px;"><?php echo $this->translate('Created at') ?></th>
+    	<th style="width:100px;padding:5px;"><?php echo $this->translate('Updated at') ?></th>
+    	<th style="width:100px;padding:5px;"><?php echo $this->translate('Delete') ?></th>
+    </tr>
+    <?php foreach($this->items as $key=>$item): ?>
+    <tr>
+    	<td style="text-align:center;"><a href="<?php echo $this->url(array('controller'=>'nickname', 'action'=>'modify', 'id'=>$item->id), null, true);?>"><?php echo $item->id ?></a></td>
+    	<td><?php echo $item->nickname ?></td>
+    	<td style="text-align:center;"><?php echo Qsoft_Helper_Datetime::time($item->created_at) ?></td>
+    	<td style="text-align:center;"><?php echo Qsoft_Helper_Datetime::time($item->updated_at) ?></td>
+    	<td style="text-align:center;"><input type='button' value="<?php echo $this->translate('Delete') ?>" onclick="goConfirm('<?php echo $this->url(array('action' => 'delete', 'id' => $item->id)) ?>');" /></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="5"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>
+</table>
+<div class="form-action" style="width:680px;">
+        <?php echo $this->items;?>
+</div>

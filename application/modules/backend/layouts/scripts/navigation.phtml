@@ -1,0 +1,34 @@
+<ul class="tab">
+    <?php $controllerName = Zend_Controller_Front::getInstance()->getRequest()->getControllerName(); ?>
+    <li <?php if (in_array($controllerName, array('user', 'message'))) echo 'class="active"'; ?>>
+        <a href="<?php echo $this->url(array('controller' => 'user', 'action' => 'index'), null, true); ?>"><?php echo $this->translate("Manage Users");?></a>
+    </li>
+    
+    <li <?php if (in_array($controllerName, array('word-not-good','nickname','user-avatar','user-emoticon','dice','item','pregroup','point-config','contents-limit','gift-category','gift','roulette','stamp'))) echo 'class="active"'; ?>>
+        <a href="<?php echo $this->url(array('controller' => 'word-not-good', 'action' => 'index'), null, true); ?>"><?php echo $this->translate("Settings");?></a>
+    </li>
+    
+    <li <?php if (in_array($controllerName, array('app-start-log', 'message-history', 'point-log', 'user-use-log'))) echo 'class="active"'; ?>>
+        <a href="<?php echo $this->url(array('controller' => 'app-start-log', 'action' => 'index'), null, true); ?>"><?php echo $this->translate("History");?></a>
+    </li>
+    
+    <li <?php if (in_array($controllerName, array('summary-register', 'total-point-log', 'summary-advertisement', 'sales-data'))) echo 'class="active"'; ?>>
+        <a href="<?php echo $this->url(array('controller' => 'summary-register', 'action' => 'index'), null, true); ?>"><?php echo $this->translate("Summary");?></a>
+    </li>
+    
+    <li <?php if (in_array($controllerName, array('user-image','single-word'))) echo 'class="active"'; ?>>
+        <a href="<?php echo $this->url(array('controller' => 'user-image', 'action' => 'index'), null, true); ?>"><?php echo $this->translate("Manage");?></a>
+    </li>
+    
+    <li <?php if ($controllerName == 'user-report') echo 'class="active"'; ?>>
+        <a href="<?php echo $this->url(array('controller' => 'user-report', 'action' => 'index'), null, true); ?>"><?php echo $this->translate("User Report");?></a>
+    </li>
+    
+    <li <?php if (in_array($controllerName, array('admin-user', 'acl-role', 'admin-login-log', 'admin-work-log'))) echo 'class="active"'; ?>>
+        <a href="<?php echo $this->url(array('controller' => 'admin-user', 'action' => 'index'), null, true); ?>"><?php echo $this->translate("Admin");?></a>
+    </li>
+    
+    <li class="logout">
+        <a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'logout'), null, true); ?>"><?php echo $this->translate("Logout");?></a>
+    </li>
+</ul>

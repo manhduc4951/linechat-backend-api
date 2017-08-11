@@ -1,0 +1,27 @@
+<table style="width:680px;">
+	<tr>
+		<th><?php echo $this->translate('Date') ?></th>
+		<th><?php echo $this->translate('Work User ID') ?></th>
+		<th><?php echo $this->translate('IP') ?></th>
+		<th><?php echo $this->translate('Computer name') ?></th>
+		<th><?php echo $this->translate('Content') ?></th>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+	<tr>
+		<td><?php echo Qsoft_Helper_Datetime::time($item->created_at) ?></td>
+		<td><a href="<?php echo $this->url(array('controller'=>'admin-user', 'action'=>'modify', 'id'=>$item->work_admin_user_id)) ?>"><?php echo $item->work_login_id ?></a></td>
+		<td><?php echo $item->ip_address ?></td>
+		<td><?php echo $item->login_pc_name ?></td>
+		<td><a href="<?php echo $this->url(array('controller'=>'admin-user', 'action'=>'modify', 'id'=>$item->target_admin_user_id)) ?>"><?php echo $item->target_login_id ?></a>&nbsp;<?php echo $item->content ?></td>
+	</tr>
+    <?php endforeach; ?>
+    
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="5"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>
+</table>
+<div class="form-action" style="width:680px;">
+        <?php echo $this->items;?>
+</div>

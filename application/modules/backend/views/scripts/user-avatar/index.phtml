@@ -1,0 +1,34 @@
+<?php echo $this->form ?>
+<table style="width:680px;">
+	<tr>
+		<th><?php echo $this->translate('SEQ') ?></th>
+		<th><?php echo $this->translate('Avatar Image') ?></th>
+		<th><?php echo $this->translate('Sex') ?></th>
+		<th><?php echo $this->translate('Public/Private') ?></th>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+    <?php $class = ($item->show_hide == 0) ? 'delete' : 'normal' ?>
+	<tr class="<?php echo $class ?>" >
+		<td style="text-align:center;">
+            <a href="<?php echo $this->url(array('controller'=>'user-avatar', 'action'=>'modify', 'id'=>$item->avatar_id), null, true);?>">
+            <?php echo $item->avatar_id ?>
+            </a>
+        </td>
+		<td style="text-align:center;">
+            <?php if($item->avatar_img): ?>
+            <img src="<?php echo Dto_UserAvatar::getImageUrl($item->avatar_img) ?>" width="30" />
+            <?php endif; ?>
+        </td>
+		<td style="text-align:center;"><?php echo ($item->sex == 1) ? 'male' : 'female' ?></td>
+		<td style="text-align:center;"><?php echo ($item->show_hide == 0) ? 'private' : 'public' ?></td>
+	</tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="4"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>	
+</table>
+<div class="form-action" style="width:680px;">
+        <?php echo $this->items;?>
+</div>

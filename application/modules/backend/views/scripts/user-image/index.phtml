@@ -1,0 +1,56 @@
+<?php echo $this->filterForm; ?>
+<form method="post">
+<table style="width:680px;">
+	<tr>
+		<th><?php echo $this->translate('Date') ?></th>
+		<th><?php echo $this->translate('User ID') ?></th>
+		<th><?php echo $this->translate('Nick name') ?></th>
+		<th><?php echo $this->translate('Image') ?></th>
+		<th><?php echo $this->translate('Public/Private') ?></th>
+	</tr>
+    
+    <?php foreach($this->items as $item): ?>
+    <?php
+        if($item->user_image) {
+            $userImageDto = new Dto_UserImage();
+            $userImageDto->user_img = $item->user_image;
+            $img_src = $userImageDto->getSmallImageUrl();
+            $class = ($item->user_img_id != $item->profile_user_img_id) ? 'delete' : 'normal';
+            $checked = ($item->user_img_id != $item->profile_user_img_id) ? 'checked=""' : '';
+            $checkbox_value = Dto_ImageStatus::TYPE_USER.'@'.$item->user_id;
+        } elseif($item->lifelog_image) {
+            $userImageDto = new Dto_Lifelog();
+            $userImageDto->image = $item->lifelog_image;
+            $img_src = $userImageDto->getImageUrl();
+            $class = ($item->lifelog_image_block == 1) ? 'delete' : 'normal';
+            $checked = ($item->lifelog_image_block == 1) ? 'checked=""' : '';
+            $checkbox_value = Dto_ImageStatus::TYPE_LIFELOG.'@'.$item->lifelog_id;
+        } elseif($item->file_transfer_image) {
+            $userImageDto = new Dto_FileTransfer();
+            $userImageDto->file_name = $item->file_transfer_image;
+            $img_src = $userImageDto->getThumbnailUrl();
+            $class = ($item->file_transfer_image_block == 1) ? 'delete' : 'normal';
+            $checked = ($item->file_transfer_image_block == 1) ? 'checked=""' : '';
+            $checkbox_value = Dto_ImageStatus::TYPE_FILE_TRANSFER.'@'.$item->file_transfer_id;    
+        }
+    ?>
+	<tr class="<?php echo $class ?>">
+		<td><?php echo Qsoft_Helper_Datetime::time($item->created_at) ?></td>
+		<td><a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'modify', 'id'=>$item->user_id), null, true);?>"><?php echo $item->user_id_name ?></a></td>
+		<td><a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'modify', 'id'=>$item->user_id), null, true);?>"><?php echo $item->nick_name ?></a></td>
+		<td><img src="<?php echo $img_src ?>" width="60" /></td>
+		<td><input type="checkbox" name="delete_image[]" value="<?php echo $checkbox_value ?>" <?php echo ' '.$checked?> /></td>
+	</tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="5"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>
+</table>
+<div class="form-action" style="width:680px;">
+        <?php echo $this->items;?>
+</div>
+
+<input type="submit" name="submit" value="<?php echo $this->translate('Submit') ?>" />
+</form>

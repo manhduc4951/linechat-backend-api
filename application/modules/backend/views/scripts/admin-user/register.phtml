@@ -1,0 +1,21 @@
+<form method="post" action="<?php echo $this->url(array('controller'=>'admin-user','action'=>'register')) ?>">
+<table style="width:500px;">
+	<tr>
+		<th><?php echo $this->translate('Login ID') ?></th>
+		<td><?php echo $this->form->login_id ?></td>
+	</tr>
+	<tr>
+		<th><?php echo $this->translate('Admin user name') ?></th>
+		<td><?php echo $this->form->admin_user_name ?></td>
+	</tr>
+	<tr>
+		<th><?php echo $this->translate('Password') ?></th>
+		<td><?php echo $this->form->password ?></td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			<?php echo $this->form->submit ?>
+		</th>
+	</tr>
+</table>
+</form>

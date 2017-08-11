@@ -1,0 +1,11 @@
+{
+    "require": {
+        "phpunit/phpunit": "3.7.13",
+        "phpunit/phpunit-story": "dev-master",
+        "phpunit/dbunit": "1.2.2",
+        "phpunit/phpunit-selenium": "1.2.12",
+        "phpunit/php-code-coverage": "1.2.*@dev",
+        "spekkionu/wideimage": "dev-master",
+        "zetacomponents/archive": "dev-master"
+    }
+}

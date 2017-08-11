@@ -1,0 +1,32 @@
+<?php echo $this->form ?>
+<table style="width:680px;">
+	<tr>
+		<th><?php echo $this->translate('SEQ') ?></th>
+		<th><?php echo $this->translate('Emoticon Image') ?></th>		
+		<th><?php echo $this->translate('Public/Private') ?></th>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+    <?php $class = ($item->show_hide == 0) ? 'delete' : 'normal' ?>
+	<tr class="<?php echo $class ?>" >
+		<td style="text-align:center;">
+            <a href="<?php echo $this->url(array('controller'=>'user-emoticon', 'action'=>'modify', 'id'=>$item->feeling_img_id), null, true);?>">
+            <?php echo $item->feeling_img_id ?>
+            </a>
+        </td>
+		<td style="text-align:center;">
+            <?php if($item->feeling_img): ?>
+            <img src="<?php echo Dto_UserEmoticon::getImageUrl($item->feeling_img) ?>" width="30" />
+            <?php endif; ?>
+        </td>		
+		<td style="text-align:center;"><?php echo ($item->show_hide == 0) ? 'private' : 'public' ?></td>
+	</tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="3"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>	
+</table>
+<div class="form-action" style="width:680px;">
+        <?php echo $this->items;?>
+</div>

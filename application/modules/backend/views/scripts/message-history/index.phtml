@@ -1,0 +1,75 @@
+<?php echo $this->filterForm ?>
+<?php $array_valuation = array(Dto_User::VALUATION_VERY_GOOD => 'Very good',
+                               Dto_User::VALUATION_GOOD => 'Good',
+                               Dto_User::VALUATION_NORMAL => 'Normal',
+                               Dto_User::VALUATION_BAD => 'Bad',
+                               Dto_User::VALUATION_VERY_BAD => 'Very bad',
+                              );
+
+?>
+<table style="width:850px;">
+	<tr>
+		<th rowspan="2"><?php echo $this->translate('Date') ?></th>
+		<th colspan="6"><?php echo $this->translate('Sender') ?></th>
+		<th colspan="5"><?php echo $this->translate('Receiver') ?></th>
+		<th rowspan="2"><?php echo $this->translate('Group') ?></th>
+		
+	</tr>
+	<tr>
+		<th><?php echo $this->translate('Unique ID') ?></th>
+		<th><?php echo $this->translate('Nick name') ?></th>
+		<th><?php echo $this->translate('Age') ?></th>
+		<th><?php echo $this->translate('Location') ?></th>
+		<th><?php echo $this->translate('Avatar') ?></th>
+		<th><?php echo $this->translate('Evaluation') ?></th>
+		<th><?php echo $this->translate('Unique ID') ?></th>
+		<th><?php echo $this->translate('Nick name') ?></th>
+		<th><?php echo $this->translate('Age') ?></th>
+		<th><?php echo $this->translate('Avatar') ?></th>
+		<th><?php echo $this->translate('Evaluation') ?></th>
+	</tr>
+    <?php foreach($this->items as $item): ?>
+	<tr>
+		<td><?php echo date('Y/m/d H:i:s', $item->sentDate/1000) ?></td>
+        <td><?php echo $item->unique_id_sender ?></td>
+        <td><?php echo $item->nick_name_sender ?></td>
+        <td><?php echo $item->user_sender_age ?></td>
+        <td><?php echo $item->user_sender_pref ?></td>
+		<td>
+            <?php if($item->avatar_img_sender): ?>
+            <img width="30" src="<?php echo Dto_UserAvatar::getImageUrl($item->avatar_img_sender) ?>" />
+            <?php endif; ?>
+        </td>
+        <td><?php echo $this->translate($array_valuation[$item->valuation_sender]) ?></td>
+        <?php if($item->unique_id_receiver): ?> 
+		<td><?php echo $item->unique_id_receiver ?></td>
+        <td><?php echo $item->nick_name_receiver ?></td>
+        <td><?php echo $item->user_receiver_age ?></td>
+		<td>
+            <?php if($item->avatar_img_receiver): ?>
+            <img width="30" src="<?php echo Dto_UserAvatar::getImageUrl($item->avatar_img_receiver) ?>" />
+            <?php endif; ?>
+        </td>
+        <td><?php echo $this->translate($array_valuation[$item->valuation_receiver]) ?></td>
+        <td></td>
+        <?php else: ?>
+        <td colspan="5">
+        <td><?php echo substr($item->toJID, 0, strrpos($item->toJID,'@')) ?></td>
+        <?php endif; ?>               
+        
+	</tr>
+	<tr>
+		<th><?php echo $this->translate('Content') ?></th></th><td colspan="13"><?php echo $item->body ?></td>
+	</tr>    
+	<?php endforeach; ?>
+    
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="13"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>
+</table>
+
+<div class="form-action">
+        <?php echo $this->items;?>
+</div>

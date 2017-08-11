@@ -1,0 +1,44 @@
+<!-- flash messages -->
+<?php echo $this->flashMessages($this->messages); ?>
+
+<!-- output form -->
+<form method="post">
+	<fieldset>
+		<legend>Crud Controller</legend>
+		<input type="text" name="controller[controller_name]" value="" placeholder="Enter the controller name" style="width: 30%" /><br /><br />
+		
+		<input type="text" name="controller[business_name]" value="" placeholder="Business class" style="width: 30%" /><br /><br />
+		
+		<input type="text" name="controller[dao_name]" value="" placeholder="Dao class" style="width: 30%" /><br /><br />
+		
+		<select name="controller[module_name]">
+			<?php foreach ($this->moduleNames as $module) : ?>
+				<?php echo '<option value="' . $module . '">' . 'Module ' . ucwords($module) . '</option>'; ?>
+			<?php endforeach; ?>
+		</select>
+		<br /><br />
+		
+		<select name="controller[controller_type]">
+			<option value="<?php echo Business_Crud::CONTROLLER_TYPE_REST; ?>">Restful Controller</option>
+			<option value="<?php echo Business_Crud::CONTROLLER_TYPE_BACKEND; ?>">Backend Controller</option>
+		</select>
+		<br /><br />
+	</fieldset>
+	
+	<fieldset>
+		<legend>Crud Business</legend>
+		<input type="text" name="business[business_name]" value="" placeholder="Business class" style="width: 30%" /><br /><br />
+		
+		<input type="text" name="business[dao_name]" value="" placeholder="Dao class" style="width: 30%" /><br /><br />
+	</fieldset>
+	
+	<fieldset>
+		<legend>Crud Dao</legend>
+		<input type="text" name="dao[dao_name]" value="" placeholder="Dao class" style="width: 30%" /><br /><br />
+		
+		<input type="text" name="dao[table_name]" value="" placeholder="Table name" style="width: 30%" /><br /><br />
+	</fieldset>
+	
+	<input type="submit" />
+	
+</form>

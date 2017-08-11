@@ -1,0 +1,71 @@
+<?php echo $this->filterForm;?>
+<?php $array_valuation = array(Dto_User::VALUATION_VERY_GOOD => 'Very good',
+                               Dto_User::VALUATION_GOOD => 'Good',
+                               Dto_User::VALUATION_NORMAL => 'Normal',
+                               Dto_User::VALUATION_BAD => 'Bad',
+                               Dto_User::VALUATION_VERY_BAD => 'Very bad',
+                              );
+
+?>
+<table>
+	<tr>
+		<th style="width:80px;padding:5px;"><?php echo $this->translate('Internal ID') ?></th>
+		<th style="width:80px;padding:5px;"><?php echo $this->translate('Unique ID') ?></th>
+		<th style="width:80px;padding:5px;"><?php echo $this->translate('User ID') ?></th>
+		<th style="width:100px;padding:5px;"><?php echo $this->translate('Nick name') ?></th>
+		<th style="width:30px;padding:5px;"><?php echo $this->translate('Emoticon') ?></th>
+		<th style="width:50px;padding:5px;"><?php echo $this->translate('Avatar') ?></th>
+		<!--
+		<th style="width:55px;padding:5px;"><?php echo $this->translate('Location') ?></th>
+		<th style="width:30px;padding:5px;"><?php echo $this->translate('Age') ?></th>
+		-->
+		<th style="width:110px;padding:5px;"><?php echo $this->translate('Created at') ?></th>
+		<th style="width:110px;padding:5px;"><?php echo $this->translate('Last access') ?></th>
+		<th style="width:30px;padding:5px;"><?php echo $this->translate('State') ?></th>
+		<th style="width:30px;padding:5px;"><?php echo $this->translate('Evaluation') ?></th>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+    <?php
+        if($item->state == 'delete') {
+            $class = 'delete';
+        } elseif ($item->state == 'block') {
+            $class = 'stop';
+        } else {
+            $class = 'normal';
+        }
+    ?>
+	<tr class="<?php echo $class ?>">
+		<td><a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'modify', 'id'=>$item->id), null, true);?>"><?php echo $item->id ?></a></td>
+		<td><?php echo $item->unique_id ?></td>
+		<td><?php echo $item->user_id ?></td>
+		<td><?php echo $item->nick_name ?></td>
+		<td style="text-align:center;">
+            <?php if($item->feeling_img): ?>
+            <img width="30" src="<?php echo Dto_UserEmoticon::getImageUrl($item->feeling_img) ?>" />
+            <?php endif; ?>
+        </td>
+		<td style="text-align:center;">
+            <?php if($item->avatar_img): ?>
+            <img width="30" src="<?php echo Dto_UserAvatar::getImageUrl($item->avatar_img) ?>" />
+            <?php endif; ?>
+        </td>
+        <!--
+		<td style="text-align:center;"><?php echo $item->user_pref ?></td>
+		<td style="text-align:center;"><?php echo $item->user_age ?></td>
+		 -->
+		<td style="text-align:center;"><?php echo Qsoft_Helper_Datetime::time($item->created_at) ?></td>
+		<td style="text-align:center;"><?php echo Qsoft_Helper_Datetime::time($item->last_access) ?></td>
+		<td style="text-align:center;"><?php echo $item->state ?></td>
+		<td style="text-align:center;"><?php echo $this->translate($array_valuation[$item->valuation]) ?></td>
+	</tr>
+    <?php endforeach; ?>
+
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="12"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>
+</table>
+<div class="form-action">
+        <?php echo $this->items;?>
+</div>

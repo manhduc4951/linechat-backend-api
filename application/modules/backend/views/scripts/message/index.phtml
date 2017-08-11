@@ -1,0 +1,46 @@
+<?php echo $this->filterForm;?>
+
+<?php if($this->action_name == 'broadcast'): ?>
+<?php $disabled = (count($this->items) < 1) ? ' disabled=""' : '' ?>
+<input type="button" onclick="window.location.href='<?php echo $this->url(array('action' => 'sendbroadcast')) .
+        '?' . http_build_query($this->query)?>'" name="submit" value="<?php echo $this->translate('Pre Send') ?>" <?php echo $disabled ?> />
+<?php endif; ?>
+
+<table>
+	<tr>
+		<th style="width:80px;padding:5px;"><?php echo $this->translate('Internal ID') ?></th>
+		<th style="width:80px;padding:5px;"><?php echo $this->translate('User ID') ?></th>
+		<th style="width:100px;padding:5px;"><?php echo $this->translate('Nick name') ?></th>
+		<th style="width:50px;padding:5px;"><?php echo $this->translate('Avatar') ?></th>
+		<th style="width:110px;padding:5px;"><?php echo $this->translate('Created at') ?></th>
+		<th style="width:110px;padding:5px;"><?php echo $this->translate('Last access') ?></th>
+		<th style="width:110px;padding:5px;"><?php echo $this->translate('Price') ?></th>
+		<th style="width:110px;padding:5px;"><?php echo $this->translate('Point') ?></th>
+	</tr>
+    <?php foreach($this->items as $key=>$item): ?>
+	<tr>
+        <?php if($this->action_name == 'broadcast'): ?>
+        <td><?php echo $item->id ?></a></td>
+        <?php else: ?>
+        <td><a href="<?php echo $this->url(array('controller'=>'message', 'action'=>'send', 'id'=>$item->id), null, true);?>"><?php echo $item->id ?></a></td>    
+        <?php endif; ?>	
+        	
+		<td><?php echo $item->user_id ?></td>
+		<td><?php echo $item->nick_name ?></td>
+		<td style="text-align:center;"><?php echo ($item->sex == 1) ? 'Male' : 'Female' ?></td>
+		<td style="text-align:center;"><?php echo Qsoft_Helper_Datetime::time($item->created_at) ?></td>
+		<td style="text-align:center;"><?php echo Qsoft_Helper_Datetime::time($item->last_access) ?></td>
+		<td style="text-align:right;">&nbsp;<?php echo $item->sum_purchase ?>&nbsp;pt</td>
+		<td style="text-align:right;"><?php echo $item->point ?>&nbsp;pt</td>
+	</tr>
+    <?php endforeach; ?>
+    
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="8"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>
+</table>
+<div class="form-action">
+        <?php echo $this->items;?>
+</div>

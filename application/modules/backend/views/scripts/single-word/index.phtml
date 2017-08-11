@@ -1,0 +1,35 @@
+<?php echo $this->filterForm ?>
+<form method="post">
+<table style="width:680px;">
+	<tr>
+		<th><?php echo $this->translate('Date') ?></th>
+		<th><?php echo $this->translate('User ID') ?></th>
+		<th><?php echo $this->translate('Nick name') ?></th>
+		<th><?php echo $this->translate('Content') ?></th>
+		<th><?php echo $this->translate('Public/Private') ?></th>
+	</tr>
+    <?php foreach($this->items as $item): ?>
+    <?php $class = ($item->description_display == 0) ? 'delete' : 'normal';
+          $checked = ($item->description_display == 0) ? 'checked=""' : '';  
+    ?>
+	<tr class="<?php echo $class ?>">
+		<td><?php echo Qsoft_Helper_Datetime::time($item->created_at) ?></td>
+		<td><a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'modify', 'id'=>$item->id), null, true);?>"><?php echo $item->user_id ?></a></td>
+		<td><a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'modify', 'id'=>$item->id), null, true);?>"><?php echo $item->nick_name ?></a></td>
+		<td><?php echo Qsoft_Helper_String::word_limiter(Qsoft_Helper_String::highlight_phrase($item->description,$this->query['description'],'<span class="alert">','</span>'),Zend_Registry::get('backend_config')->user->profile->limit) ?></td>
+		<td><input type="checkbox" name="description[]" value="<?php echo $item->id ?>" <?php echo ' '.$checked?> /></td>
+	</tr>
+    <?php endforeach; ?>
+    <?php if (count($this->items) < 1) : ?>
+        <tr>
+            <td colspan="5"><?php echo $this->translate("There are no items.");?></td>
+        </tr>
+    <?php endif; ?>	
+</table>
+<?php if (count($this->items) > 1) : ?>
+<div class="form-action" style="width:680px;">
+        <?php echo $this->items;?>
+</div>
+<?php endif; ?>
+<input type="submit" name="submit" value="<?php echo $this->translate('Submit') ?>" />
+</form>

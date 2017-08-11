@@ -1,0 +1,33 @@
+<?php echo $this->filterForm;?>
+<table>
+	<tr>
+		<th rowspan="3" style="width:80px;padding:5px;"><?php echo $this->translate('Date') ?></th>
+		<th rowspan="3" style="width:80px;padding:5px;"><?php echo $this->translate('Time') ?></th>
+		<th rowspan="3" style="width:80px;padding:5px;"><?php echo $this->translate('Total') ?></th>
+		<th colspan="<?php echo count($this->avatars) ?>" style="text-align:center;width:100px;padding:5px;"><?php echo $this->translate('Avatar') ?></th>
+	</tr>
+	<tr>        
+        <?php foreach($this->avatars as $avatar): ?>
+		<td style="text-align:center;width:100px;padding:5px;"><img src="<?php echo Dto_UserAvatar::getImageUrl($avatar->avatar_img) ?>" width="30" /></td>
+		<?php endforeach; ?>        
+	</tr>
+	<tr>
+        <?php for($i = 1; $i <= count($this->avatars); $i++): ?>
+        <th><?php echo $this->translate('Total') ?></th>		
+        <?php endfor; ?>
+		
+	</tr>
+    <?php foreach($this->items as $item): ?>
+	<tr>        
+		<td><?php echo Qsoft_Helper_Datetime::dateView($item->date_hour) ?></td>
+        <td><?php echo Qsoft_Helper_Datetime::hour($item->date_hour) ?></td>
+		<td style="text-align:right;"><?php echo $item->total ?></td>
+        <?php for($i = 1; $i <= count($this->avatars); $i++): ?>
+        <th><?php echo $item->{'avatar_'.$i} ?></th>		
+        <?php endfor; ?>
+	</tr>
+    <?php endforeach; ?>	
+</table>
+<div class="form-action">
+        <?php echo $this->items;?>
+</div>

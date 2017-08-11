@@ -1,0 +1,40 @@
+<table>
+	<tr>
+		<th colspan="4" style="text-align:center;"><?php echo $this->translate('Send to user') ?></th>
+	</tr>
+	<tr>
+		<th>● <?php echo $this->translate('Internal ID') ?></th>
+		<td><?php echo $this->item->id ?></td>
+		<th>● <?php echo $this->translate('User ID') ?></th>
+		<td><?php echo $this->item->user_id ?></td>
+	</tr>
+	<tr>
+		<th>● <?php echo $this->translate('Nick name') ?></th>
+		<td><?php echo $this->item->nick_name ?></td>
+		<th>● <?php echo $this->translate('Avatar') ?></th>
+		<td><?php echo ($this->item->sex == 1) ? 'Male' : 'Female' ?></td>
+	</tr>
+	<tr>
+		<th>● <?php echo $this->translate('Created at') ?></th>
+		<td><?php echo $this->item->created_at ?></td>
+		<th>● <?php echo $this->translate('Last access') ?></th>
+		<td><?php echo $this->item->last_access ?></td>
+	</tr>
+	<tr>
+		<th>● <?php echo $this->translate('Price') ?></th>
+		<td><?php echo $this->item->sum_purchase ?> pt</td>
+		<th>● <?php echo $this->translate('Point') ?></th>
+		<td><?php echo $this->item->point ?> pt</td>
+	</tr>								
+</table>
+
+<form method="post" action="<?php echo $this->item->id ?>">
+    <div style="height:200px;width:840px;margin: 0 auto;text-align:left;">
+       <br />
+	   <span style="font-size:12px;font-weight:bold;">● <?php echo $this->translate('Content') ?></span>
+	   <br /><br />
+       <textarea name="text" id="text" style="width:100%;height:70%;"></textarea>
+    </div>
+    <br />
+    <input type="submit" name="" value="<?php echo $this->translate('Send Message') ?>" />    
+</form>
